@@ -1,0 +1,9 @@
+<!-- BEGIN_INCLUDE(ctg:greet) -->
+    <ctg:greet config-ref="" friend="#[map-payload:friend]" />
+<!-- END_INCLUDE(ctg:greet) -->
+<!-- BEGIN_INCLUDE(ctg:query-processor) -->
+    <ctg:query-processor config-ref="" query="SELECT fieldName FROM MY_TABLE" />
+<!-- END_INCLUDE(ctg:query-processor) -->
+<!-- BEGIN_INCLUDE(ctg:add-entity) -->
+    <ctg:add-entity config-ref="" key="id1"/>
+<!-- END_INCLUDE(ctg:add-entity) -->

@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CTG
+Bundle-SymbolicName: org.mule.tooling.ui.contribution.ctg.3.5.0;singleton:=true
+Bundle-Version: 1.0.1.201606031016
+Bundle-Activator: org.mule.tooling.ui.contribution.CtgActivator
+Bundle-Vendor: 
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.mule.tooling.core;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Eclipse-BundleShape: dir
