@@ -54,7 +54,7 @@ import org.mule.modules.ctg.generated.pooling.DevkitGenericKeyedObjectPool;
  * 
  */
 @SuppressWarnings("all")
-@Generated(value = "Mule DevKit Version 3.8.0", date = "2016-06-03T10:16:30-05:00", comments = "Build UNNAMED.2762.e3b1307")
+@Generated(value = "Mule DevKit Version 3.8.0", date = "2016-06-06T12:17:29-04:00", comments = "Build UNNAMED.2762.e3b1307")
 public class CTGConnectorConfigConnectionManagementConnectionManager
     extends ExpressionEvaluatorSupport
     implements MetadataAware, MuleContextAware, ProcessAdapter<CTGConnectorConnectionManagementAdapter> , Capabilities, Disposable, Initialisable, Testable, ConnectorMetaDataEnabled, ConnectionManagementConnectionManager<ConnectionManagementConfigCTGConnectorConnectionKey, CTGConnectorConnectionManagementAdapter, ConnectorConfig>
@@ -95,7 +95,7 @@ public class CTGConnectorConfigConnectionManagementConnectionManager
     protected PoolingProfile poolingProfile;
     protected RetryPolicyTemplate retryPolicyTemplate;
     private final static String MODULE_NAME = "CTG";
-    private final static String MODULE_VERSION = "1.0.1-SNAPSHOT";
+    private final static String MODULE_VERSION = "1.0.3-SNAPSHOT";
     private final static String DEVKIT_VERSION = "3.8.0";
     private final static String DEVKIT_BUILD = "UNNAMED.2762.e3b1307";
     private final static String MIN_MULE_VERSION = "3.5.0";

@@ -1,0 +1,11 @@
+<namespace xmlns="http://www.mulesoft.org/schema/mule/tooling.attributes" xmlns:mule="http://www.mulesoft.org/schema/mule/core">
+    <require>
+       <jar name="ccf (ccf2.jar)" fileName="ccf2(.*)\.jar" targetFolder="/lib/ctg" targetRuntimeFolder="/plugins" />
+       <jar name="cicseci (cicseci.jar)" fileName="cicseci(.*)\.jar" targetFolder="/lib/ctg" targetRuntimeFolder="/plugins" />
+       <jar name="cicsecitools (cicstools.jar)" fileName="cicsecitools(.*)\.jar" targetFolder="/lib/ctg" targetRuntimeFolder="/plugins" />
+       <jar name="cicsframe (cicsframe.jar)" fileName="cicsframe(.*)\.jar" targetFolder="/lib/ctg" targetRuntimeFolder="/plugins" />
+       <jar name="ctgclient (ctgclient.jar)" fileName="ctgclient(.*)\.jar" targetFolder="/lib/ctg" targetRuntimeFolder="/plugins" />
+       <jar name="ctgserver (ctgserver.jar)" fileName="ctgserver(.*)\.jar" targetFolder="/lib/ctg" targetRuntimeFolder="/plugins" />
+       <jar name="security (security.jar)" fileName="security(.*)\.jar" targetFolder="/lib/ctg" targetRuntimeFolder="/plugins" />
+    </require>
+</namespace>

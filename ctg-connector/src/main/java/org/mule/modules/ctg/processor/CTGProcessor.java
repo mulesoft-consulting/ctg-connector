@@ -97,8 +97,8 @@ public class CTGProcessor {
 		}
 		
 		if (response != null) {
-			logger.debug("output payload: " + (String)response);
-			return new ByteArrayInputStream(((String)response).getBytes());
+			logger.debug("output payload: " + response);
+			return new ByteArrayInputStream((byte []) response);
 		} else {
 			logger.warn("unknown container name(s) " + responseContainer + " " + errorContainer);
 		}

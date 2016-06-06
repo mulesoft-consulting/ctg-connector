@@ -11,7 +11,7 @@ import org.mule.modules.ctg.CTGConnector;
  * 
  */
 @SuppressWarnings("all")
-@Generated(value = "Mule DevKit Version 3.8.0", date = "2016-06-03T10:16:30-05:00", comments = "Build UNNAMED.2762.e3b1307")
+@Generated(value = "Mule DevKit Version 3.8.0", date = "2016-06-06T12:17:29-04:00", comments = "Build UNNAMED.2762.e3b1307")
 public class CTGConnectorConnectionManagementAdapter
     extends CTGConnectorProcessAdapter
     implements ConnectionManagementConnectorAdapter
