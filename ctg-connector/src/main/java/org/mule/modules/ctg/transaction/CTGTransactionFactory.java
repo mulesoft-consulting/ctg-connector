@@ -13,8 +13,6 @@ public class CTGTransactionFactory implements UniversalTransactionFactory {
 		// TODO Auto-generated method stub
 		CTGTransaction tx = new CTGTransaction(muleCtx);
 		
-		//tx.begin();
-		
 		return tx;
 	}
 

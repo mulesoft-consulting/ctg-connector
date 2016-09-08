@@ -5,6 +5,11 @@ import javax.resource.cci.Connection;
 import javax.resource.cci.ConnectionFactory;
 import javax.resource.cci.ConnectionSpec;
 
+import org.mule.api.transaction.Transaction;
+import org.mule.api.transaction.TransactionException;
+import org.mule.modules.ctg.ra.ResourceAdapterUtils;
+import org.mule.modules.ctg.xa.CTGXAResourceWrapper;
+import org.mule.transaction.TransactionCoordination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,17 +23,57 @@ public class ConnectionManager {
 	
 	private ConnectionProfile connectionProfile;
 	private ConnectionFactory connectionFactory;
+	private Connection cachedConnection;
 	
 	public ConnectionManager(ConnectionProfile connectionProfile) throws ResourceException {
 		init(connectionProfile);
 	}
 	
-	public Connection getConnection() throws ResourceException {
-		return getConnectionFactory().getConnection();
+	public Connection getConnection() throws ResourceException, TransactionException {
+		return getBoundConnection(null);
 	}
 	
-	public Connection getConnection(ConnectionSpec connectionSpec) throws ResourceException {
-		return getConnectionFactory().getConnection(connectionSpec);
+	public Connection getConnection(ConnectionSpec connectionSpec) throws ResourceException, TransactionException {
+		return getBoundConnection(connectionSpec);
+	}
+	
+	public ConnectionProfile getConnectionProfile() {
+		return connectionProfile;
+	}
+	
+	protected Connection getBoundConnection(ConnectionSpec connectionSpec) throws ResourceException, TransactionException {
+		Transaction tx = TransactionCoordination.getInstance().getTransaction();
+		
+		if (tx == null) {
+			  return getCachedConnection(connectionSpec);
+		} else {
+	         if (tx.hasResource(getConnectionFactory())) {
+	        	 CTGXAResourceWrapper xaWrapper = (CTGXAResourceWrapper) tx.getResource(getConnectionFactory());
+	        	 
+	        	 return xaWrapper.getConnection();
+	         } else {
+	        	 Connection conn = getCachedConnection(connectionSpec);
+	        	  
+	        	 if (tx.isXA()) {
+	        		 tx.bindResource(getConnectionFactory(), ResourceAdapterUtils.getXAResource(conn));
+	        	 } else {
+	        		 tx.bindResource(getConnectionFactory(), conn);
+	        	 }
+	        	 return conn;
+	        }
+		}
+	}
+	
+	protected void bindResource(Connection conn) throws ResourceException, TransactionException {
+		Transaction tx = TransactionCoordination.getInstance().getTransaction();
+		
+		if (tx != null) {
+			if (tx.isXA()) {
+				tx.bindResource(getConnectionFactory(), ResourceAdapterUtils.getXAResource(conn));
+			} else {
+				tx.bindResource(getConnectionFactory(), conn);
+			}
+		}
 	}
 	
 	protected void init(ConnectionProfile connectionProfile) throws ResourceException {
@@ -36,10 +81,6 @@ public class ConnectionManager {
 		getConnectionFactory();
 	}
 	
-	public ConnectionProfile getConnectionProfile() {
-		return connectionProfile;
-	}
-
 	protected void setConnectionProfile(ConnectionProfile connectionProfile) {
 		this.connectionProfile = connectionProfile;
 	}
@@ -47,6 +88,7 @@ public class ConnectionManager {
 	public ConnectionFactory getConnectionFactory() throws ResourceException {
 		
 		if (connectionFactory == null) {
+			//com.ibm.ctg.client.T.setDebugOn(true);
 			ECIManagedConnectionFactory managedCF = new  ECIManagedConnectionFactory();
 	    	
 	    	logger.debug("acquiring connection to: " + 
@@ -70,6 +112,12 @@ public class ConnectionManager {
 	    	managedCF.setServerName(getConnectionProfile().getServerName());
 	    	managedCF.setUserName(getConnectionProfile().getUserName());
 	    	managedCF.setPassword(getConnectionProfile().getPassword());
+	    	// hard-coded enabled XA Support
+	    	managedCF.setXaSupport("on");
+	    	
+	    	if (getConnectionProfile().getConenctionTimeout() > 0) {
+	    		managedCF.setSocketConnectTimeout(String.valueOf(getConnectionProfile().getConenctionTimeout()));
+	    	}
 	    	
     		setConnectionFactory((ConnectionFactory) managedCF.createConnectionFactory());
     		
@@ -83,5 +131,14 @@ public class ConnectionManager {
 		this.connectionFactory = connectionFactory;
 	}
 	
-	
+	protected Connection getCachedConnection(ConnectionSpec connectionSpec) throws ResourceException {
+		if (this.cachedConnection == null) {
+		
+			this.cachedConnection = (connectionSpec == null ?
+	       		 getConnectionFactory().getConnection() :
+	       		 getConnectionFactory().getConnection(connectionSpec));
+		}
+		
+		return this.cachedConnection;
+	}
 }

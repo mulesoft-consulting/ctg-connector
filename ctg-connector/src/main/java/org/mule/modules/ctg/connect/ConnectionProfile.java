@@ -1,7 +1,5 @@
 package org.mule.modules.ctg.connect;
 
-import org.mule.api.MuleContext;
-
 public class ConnectionProfile {
 	private static String NON_SECURE_URL_PREFIX="tcp://";
 	private static String SECURE_URL_PREFIX="ssl://";
@@ -15,13 +13,15 @@ public class ConnectionProfile {
 	private String password;
 	private String keyStore;
 	private String keyStorePassword;
-	private MuleContext muleContext;
+	private int conenctionTimeout;
+	private int minConnections;
+	private int maxConnections;
 	
-	public MuleContext getMuleContext() {
-		return muleContext;
+	public int getConenctionTimeout() {
+		return conenctionTimeout;
 	}
-	public void setMuleContext(MuleContext muleContext) {
-		this.muleContext = muleContext;
+	public void setConenctionTimeout(int conenctionTimeout) {
+		this.conenctionTimeout = conenctionTimeout;
 	}
 	public boolean isSecure() {
 		return isSecure;
@@ -79,5 +79,17 @@ public class ConnectionProfile {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public int getMinConnections() {
+		return minConnections;
+	}
+	public void setMinConnections(int minConnections) {
+		this.minConnections = minConnections;
+	}
+	public int getMaxConnections() {
+		return maxConnections;
+	}
+	public void setMaxConnections(int maxConnections) {
+		this.maxConnections = maxConnections;
 	}
 }

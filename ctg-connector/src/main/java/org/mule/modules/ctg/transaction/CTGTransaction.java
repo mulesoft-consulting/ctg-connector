@@ -3,6 +3,7 @@ package org.mule.modules.ctg.transaction;
 import javax.resource.ResourceException;
 import javax.resource.cci.Connection;
 import javax.resource.cci.ConnectionFactory;
+import javax.resource.cci.LocalTransaction;
 
 import org.mule.config.i18n.CoreMessages;
 import org.mule.api.MuleContext;
@@ -30,6 +31,7 @@ public class CTGTransaction extends AbstractSingleResourceTransaction {
 		setConnection((Connection) resource);
 		
 		super.bindResource(key, resource);
+		doBegin();
 	}
 	
 	@Override
@@ -37,7 +39,15 @@ public class CTGTransaction extends AbstractSingleResourceTransaction {
 		// TODO Auto-generated method stub
 
 		try {
-			getConnection().getLocalTransaction().begin();
+			LocalTransaction localTran = getConnection().getLocalTransaction();
+			
+			if (localTran != null) {
+				logger.debug("found local transaction - " + localTran.toString());
+				localTran.begin();
+				logger.debug("started / joined transaction");
+			} else {
+				logger.debug("no transaction found");
+			}
 		} catch (ResourceException e) {
 			throw new TransactionException(e);
 		}
@@ -47,7 +57,15 @@ public class CTGTransaction extends AbstractSingleResourceTransaction {
 	protected void doCommit() throws TransactionException {
 		// TODO Auto-generated method stub
 		try {
-			getConnection().getLocalTransaction().commit();
+			LocalTransaction localTran = getConnection().getLocalTransaction();
+			
+			if (localTran != null) {
+				logger.debug("committing transaction - " + localTran.toString());
+				localTran.commit();
+				logger.debug("done.");
+			} else {
+				
+			}
 		} catch (ResourceException e) {
 			throw new TransactionException(e);
 		}
@@ -57,7 +75,13 @@ public class CTGTransaction extends AbstractSingleResourceTransaction {
 	protected void doRollback() throws TransactionException {
 		// TODO Auto-generated method stub
 		try {
-			getConnection().getLocalTransaction().rollback();
+			LocalTransaction localTran = getConnection().getLocalTransaction();
+
+			if (localTran != null) {
+				logger.debug("rolling back transaction...");
+				localTran.rollback();
+				logger.debug("done.");;
+			}
 		} catch (ResourceException e) {
 			throw new TransactionException(e);
 		}

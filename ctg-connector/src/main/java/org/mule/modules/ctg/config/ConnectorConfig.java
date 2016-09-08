@@ -12,6 +12,7 @@ import org.mule.api.annotations.display.Placement;
 import org.mule.api.annotations.param.ConnectionKey;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
+import org.mule.api.transaction.TransactionException;
 import org.mule.modules.ctg.connect.ConnectionManager;
 import org.mule.modules.ctg.connect.ConnectionProfile;
 import org.slf4j.Logger;
@@ -91,7 +92,6 @@ public class ConnectorConfig {
     		profile.setServerName(serverName);
     		profile.setUserName(username);
     		profile.setPassword(password);
-    		profile.setMuleContext(muleContext);
     		
     		profile.setSecure(getKeyStoreLocation() != null && getKeyStorePassword() != null);
     		
@@ -100,17 +100,13 @@ public class ConnectorConfig {
     			profile.setKeyStorePassword(getKeyStorePassword());
     		}
     		
-    		ConnectionManager connMgr = new ConnectionManager(profile);
-    		
-    		logger.debug(connMgr.getConnection().getMetaData().getEISProductName());
-    
-    		setConnectionManager(connMgr);
+    		setConnectionManager(new ConnectionManager(profile));
     		
     		if (!isConnected()) {
-    			throw new ConnectionException(ConnectionExceptionCode.UNKNOWN, "CTG", "conection unavailable");
+    			throw new ConnectionException(ConnectionExceptionCode.CANNOT_REACH, "CTG", "conection unavailable");
     		}
-    	} catch(ResourceException e) {
-    		throw new ConnectionException(ConnectionExceptionCode.UNKNOWN, "CTG", e.getMessage());
+    	} catch(Exception e) {
+    		throw new ConnectionException(ConnectionExceptionCode.CANNOT_REACH, "CTG", e.getMessage());
     	}
     }
     
@@ -119,7 +115,15 @@ public class ConnectorConfig {
      */
     @Disconnect
     public void disconnect() {
-        setConnectionManager(null);
+    	try {
+			getConnectionManager().getConnection().close();
+		} catch (TransactionException e) {
+			// TODO Auto-generated catch block
+			logger.error("disconnect(): ", e);
+		} catch (ResourceException e) {
+			// TODO Auto-generated catch block
+			logger.error("disconnect(): ", e);
+		}
     }
  
     /**
@@ -131,7 +135,7 @@ public class ConnectorConfig {
     	if (getConnectionManager() != null) { 
 	    	try {
 	    		return getConnectionManager().getConnection() != null;
-	    	} catch (ResourceException e) {
+	    	} catch (Exception e) {
 	    		logger.error("isConnection(); failed: ", e);
 	    	}
     	}
@@ -145,9 +149,9 @@ public class ConnectorConfig {
     @ConnectionIdentifier
     public String connectionId() {
     	try {
-    		return getConnectionManager().getConnection().getMetaData().getEISProductName();
-    	} catch(ResourceException e) {
-    		
+    		return String.valueOf(getConnectionManager().getConnection().hashCode());
+    	} catch(Exception e) {
+    		logger.error("connectionId(): ", e);
     	}
     	return null;
     }

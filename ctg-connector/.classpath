@@ -5,6 +5,7 @@
 	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="target/generated-sources/mule"/>
 	<classpathentry excluding="**/*.java" kind="src" path="src/main/resources"/>
+	<classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.1/jta-1.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/inject/javax.inject/1/javax.inject-1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/xml/stream/stax-api/1.0-2/stax-api-1.0-2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4.3/mail-1.4.3.jar"/>
@@ -16,9 +17,12 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="var" path="M2_REPO/com/ibm/ccf2/9.2/ccf2-9.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/ibm/ctgclient/9.2/ctgclient-9.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/ibm/ctgserver/9.2/ctgserver-9.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/ibm/cicsjee/9.2/cicsjee-9.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/ibm/screenable/9.2/screenable-9.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-j2ee-connector_1.6_spec/1.0/geronimo-j2ee-connector_1.6_spec-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/codehaus/btm/btm/2.1.4/btm-2.1.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.6.4/slf4j-api-1.6.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/mule/mule-core/3.7.0/mule-core-3.7.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/mule/extensions/mule-extensions-api/1.0.0-alpha/mule-extensions-api-1.0.0-alpha.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.9.2/commons-beanutils-1.9.2.jar"/>
@@ -32,7 +36,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-jta_1.1_spec/1.1.1/geronimo-jta_1.1_spec-1.1.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-j2ee-connector_1.5_spec/1.1/geronimo-j2ee-connector_1.5_spec-1.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/lmax/disruptor/3.3.0/disruptor-3.3.0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/logging/log4j/log4j-api/2.1/log4j-api-2.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/logging/log4j/log4j-core/2.1/log4j-core-2.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/logging/log4j/log4j-slf4j-impl/2.1/log4j-slf4j-impl-2.1.jar"/>
