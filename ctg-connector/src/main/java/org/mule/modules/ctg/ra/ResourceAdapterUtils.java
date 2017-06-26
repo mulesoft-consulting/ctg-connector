@@ -3,6 +3,7 @@ package org.mule.modules.ctg.ra;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.resource.ResourceException;
@@ -69,7 +70,7 @@ public class ResourceAdapterUtils {
             {
                 InetAddress address = NetworkUtils.getLocalHost();
                 String uniqueIdForServer = String.valueOf(Math.abs(new HashCodeBuilder(17, 37).append(address.getHostName()).append(address.getHostName()).append(System.getProperty(CLUSTER_NODE_ID_PROPERTY, "0")).toHashCode()));
-                String uniqueResourceId = uniqueIdForServer + "-" + "-ctg";
+                String uniqueResourceId = uniqueIdForServer + "-" + UUID.randomUUID() + "-ctg";
                 
                 return uniqueResourceId;
             }

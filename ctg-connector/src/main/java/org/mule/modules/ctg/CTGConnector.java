@@ -64,7 +64,7 @@ public class CTGConnector {
 			String programName, 
 			String tpnName,
 			@Default("ibm037") String encoding,
-			@Default("#[payload]") ByteArrayOutputStream payload) {
+			@Default("#[payload]") ByteArrayInputStream payload) {
 
     	logger.debug("execute(); " + programName);
     	DataType<InputStream> dataType = DataTypeFactory.create(InputStream.class, MimeTypes.TEXT);
@@ -83,7 +83,7 @@ public class CTGConnector {
 			@Default("ibm037") String encoding,
 			@Default("-1") int commareaLength,
 			@Default("-1") int replyLength,
-			@Default("#[payload]") ByteArrayOutputStream payload) {
+			@Default("#[payload]") ByteArrayInputStream payload) {
 
     	logger.debug("execute(); " + programName);
     	DataType<InputStream> dataType = DataTypeFactory.create(InputStream.class, MimeTypes.TEXT);

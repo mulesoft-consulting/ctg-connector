@@ -33,6 +33,23 @@ public class ConnectionManager {
 		return getBoundConnection(null);
 	}
 	
+	public boolean isConnected() {
+		return cachedConnection != null;
+	}
+	
+	public String connectionId() {
+		return String.valueOf(cachedConnection.hashCode());
+	}
+	
+	public void disconnect() {
+		try {
+			cachedConnection.close();
+		} catch (ResourceException e) {
+			// TODO Auto-generated catch block
+			logger.error("disconnect(): ", e);
+		}
+	}
+	
 	public Connection getConnection(ConnectionSpec connectionSpec) throws ResourceException, TransactionException {
 		return getBoundConnection(connectionSpec);
 	}

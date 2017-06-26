@@ -41,7 +41,7 @@ public class CTGProcessor {
 			String tpnName,
 			int commareaLength,
 			int replyLength,
-			ByteArrayOutputStream payload) {
+			ByteArrayInputStream payload) {
 		Interaction interaction = null;
 		ByteArrayInputStream response = null;
 				
@@ -60,7 +60,7 @@ public class CTGProcessor {
 			
 			ByteArrayRecord in = new ByteArrayRecord(), out = new ByteArrayRecord();
 			
-			in.setBytes(payload.toByteArray());
+			in.setBytes(getBytesFromInputStream(payload));
 			
 			logPayload(programName, true, in.getBytes());
 			
@@ -90,7 +90,7 @@ public class CTGProcessor {
 			String errorContainer,
 			String programName, 
 			String tpnName,
-			ByteArrayOutputStream payload,
+			ByteArrayInputStream payload,
 			boolean convert) {
 		
 		Interaction interaction = null;
@@ -125,10 +125,10 @@ public class CTGProcessor {
 	protected ECIChannelRecord createChannel(String channelName, 
 			String requestContainer,
 			String programName,
-			ByteArrayOutputStream payload,
+			ByteArrayInputStream payload,
 			boolean convert) throws ResourceException, IOException {
 		ECIChannelRecord channel = new ECIChannelRecord(channelName);
-		byte [] bytes = payload.toByteArray();
+		byte [] bytes = getBytesFromInputStream(payload);
 		logPayload(programName, true, bytes);
 		
 		if (convert) {
@@ -190,5 +190,18 @@ public class CTGProcessor {
 			fOs.write(payload);
 			fOs.close();
 		}
+	}
+	
+	protected byte[] getBytesFromInputStream(ByteArrayInputStream bis)  throws IOException {
+		
+		if (bis == null || bis.available() < 1) {
+			return null;
+		}
+		
+		byte bytes[] = new byte[bis.available()];
+		
+		bis.read(bytes);
+		
+		return bytes;
 	}
 }

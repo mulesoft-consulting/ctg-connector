@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.mule.api.annotations.Configurable;
 //import org.mule.api.annotations.Configurable;
 import org.mule.api.annotations.Connect;
+import org.mule.api.annotations.ConnectStrategy;
 import org.mule.api.annotations.ConnectionIdentifier;
 import org.mule.api.annotations.Disconnect;
 import org.mule.api.annotations.TestConnectivity;
@@ -75,7 +76,7 @@ public class ConnectorConfig {
 		this.connectionManager = connectionManager;
 	}
 
-	@Connect
+	@Connect(strategy = ConnectStrategy.MULTIPLE_INSTANCES)
     @TestConnectivity(active=true)
     public void connect(
     		@ConnectionKey @FriendlyName("CTG Host") String host,
@@ -102,10 +103,11 @@ public class ConnectorConfig {
     		
     		setConnectionManager(new ConnectionManager(profile));
     		
-    		if (!isConnected()) {
-    			throw new ConnectionException(ConnectionExceptionCode.CANNOT_REACH, "CTG", "conection unavailable");
-    		}
+    		getConnectionManager().getConnection();
+    		
     	} catch(Exception e) {
+    		logger.error("connect(): ", e);
+    		
     		throw new ConnectionException(ConnectionExceptionCode.CANNOT_REACH, "CTG", e.getMessage());
     	}
     }
@@ -134,7 +136,7 @@ public class ConnectorConfig {
     	
     	if (getConnectionManager() != null) { 
 	    	try {
-	    		return getConnectionManager().getConnection() != null;
+	    		return getConnectionManager().isConnected();
 	    	} catch (Exception e) {
 	    		logger.error("isConnection(); failed: ", e);
 	    	}
@@ -149,7 +151,7 @@ public class ConnectorConfig {
     @ConnectionIdentifier
     public String connectionId() {
     	try {
-    		return String.valueOf(getConnectionManager().getConnection().hashCode());
+    		return getConnectionManager().connectionId();
     	} catch(Exception e) {
     		logger.error("connectionId(): ", e);
     	}
