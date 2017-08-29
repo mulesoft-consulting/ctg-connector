@@ -155,11 +155,15 @@ public class CTGProcessor {
 		}
 		
 		if (response != null) {
-			logPayload(programName, false, (byte[]) response);
+			byte[] buffer;
+			
+			buffer = (response instanceof java.lang.String) ? ((String)response).getBytes() : (byte[]) response;
+				
+			logPayload(programName, false, buffer);
 			
 			return convert ? 
-				new ByteArrayInputStream(E2AConverter.e2a((byte[]) response)): 
-				new ByteArrayInputStream((byte []) response);
+				new ByteArrayInputStream(E2AConverter.e2a(buffer)): 
+				new ByteArrayInputStream(buffer);
 		} else {
 			logger.warn("unknown container name(s) " + responseContainer + " " + errorContainer);
 		}
